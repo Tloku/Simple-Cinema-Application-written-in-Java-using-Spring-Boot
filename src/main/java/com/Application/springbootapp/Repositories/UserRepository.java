@@ -10,11 +10,12 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 @Repository
-public interface UżytkownikRepository extends JpaRepository<Użytkownik, Integer> {
+public interface UserRepository extends JpaRepository<Użytkownik, Integer> {
 
     @Modifying
     @Query(
-            value = "insert into użytkownik(imie, nazwisko, email, haslo, RolaRola_ID) Values(:name, :surname, :email, :haslo, :rola )",
+            value = "INSERT INTO użytkownik(imie, nazwisko, email, haslo, RolaRola_ID) " +
+                    " VALUES (:name, :surname, :email, :haslo, :rola )",
             nativeQuery = true
     )
     @Transactional
@@ -23,13 +24,13 @@ public interface UżytkownikRepository extends JpaRepository<Użytkownik, Intege
 
 
     @Query(
-            value = "Select * from użytkownik u where u.email = ?1",
+            value = "SELECT * FROM użytkownik u WHERE u.email = ?1",
             nativeQuery = true
     )
     Użytkownik findByEmail(String email);
 
     @Query(
-            value = "Select u.RolaRola_ID from użytkownik u where u.email = ?1",
+            value = "SELECT u.RolaRola_ID FROM użytkownik u WHERE u.email = ?1",
             nativeQuery = true
     )
     int findRolaUzytkownikaByEmail(String email);

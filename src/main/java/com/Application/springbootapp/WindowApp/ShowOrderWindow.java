@@ -2,17 +2,14 @@ package com.Application.springbootapp.WindowApp;
 
 import com.Application.springbootapp.Entities.Bilet;
 import com.Application.springbootapp.Entities.Film;
-import com.Application.springbootapp.Services.iBiletService;
-import com.Application.springbootapp.Services.iFilmService;
-import com.Application.springbootapp.Services.iHarmonogramService;
-import com.Application.springbootapp.Services.iRepertuarKinaService;
+import com.Application.springbootapp.Services.iTicketService;
+import com.Application.springbootapp.Services.iMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,21 +19,19 @@ public class ShowOrderWindow extends JFrame {
     private int winWidth = 800;
     private int winHeight = 200;
     JPanel panel = new JPanel();
-    private iBiletService biletService;
-    private iFilmService filmService;
-    private iRepertuarKinaService repertuarKinaService;
+    private iTicketService ticketService;
+    private iMovieService movieService;
     private int orderID;
     private String[] orderTableColumnNames = {"Bilet_id","Tytuł","Data", "Godzina_rozpoczęcia"};
     private JTable ordersTable;
     private DefaultTableModel ordersTableModel = new DefaultTableModel(null, orderTableColumnNames);
 
     @Autowired
-    public ShowOrderWindow(iBiletService biletService, iFilmService filmService, iRepertuarKinaService repertuarKinaService,
+    public ShowOrderWindow(iTicketService ticketService, iMovieService movieService,
                            @Value("${property.orderID:0}") int orderID) {
             super("Koszyk");
-            this.biletService = biletService;
-            this.filmService = filmService;
-            this.repertuarKinaService = repertuarKinaService;
+            this.ticketService = ticketService;
+            this.movieService = movieService;
             this.orderID = orderID;
             initComponents();
             initTableData();
@@ -60,16 +55,16 @@ public class ShowOrderWindow extends JFrame {
     }
 
     private void initTableData() {
-        List<Bilet> ticketsList = biletService.findTicketsByOrderID(orderID);
+        List<Bilet> ticketsList = ticketService.findTicketsByOrderID(orderID);
         List<String> moviesList = new ArrayList<>();
         List<Date> datesList = new ArrayList<>();
         for(Bilet ticket : ticketsList){
-            moviesList.add(biletService.findMovieTitleByTicketID(ticket.getBiletID()));
+            moviesList.add(ticketService.findMovieTitleByTicketID(ticket.getBiletID()));
         }
 
         for(int i = 0; i < moviesList.size(); i++) {
-            Film film = filmService.findByTitle(moviesList.get(i));
-            datesList.add(filmService.findRepertoireDateByMovieIDAndTicketID(film.getFilmID(), ticketsList.get(i).getBiletID()));
+            Film film = movieService.findByTitle(moviesList.get(i));
+            datesList.add(movieService.findRepertoireDateByMovieIDAndTicketID(film.getFilmID(), ticketsList.get(i).getBiletID()));
         }
 
         for(int i = 0; i < ticketsList.size(); i++){

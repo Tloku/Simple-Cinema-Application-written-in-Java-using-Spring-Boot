@@ -1,13 +1,12 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Services.iBiletService;
+import com.Application.springbootapp.Services.iTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,19 +14,18 @@ import java.util.Date;
 public class FixTicketWindow extends JFrame {
     private JPanel panel = new JPanel(new GridBagLayout());
     private JLabel mainLabel = new JLabel("Zmień godzine rozpoczęcia biletu lub usuń bilet");
-    private JLabel hourLabel = new JLabel("Godzina: ");
-    private JLabel minutesLabel = new JLabel("Minuta: ");
-    private JTextField hourTextField = new JTextField( 5);
-    private JTextField minutesTextField = new JTextField( 5);
+    private JLabel beginTimeLabel = new JLabel("Godzina rozpoczęcia: ");
+    private JTextField beginTimeTextField = new JTextField( "HH:mm:ss",10);
 
     private JButton changeHourButton = new JButton("Zmień godzinę");
     private JButton deleteTicketButton = new JButton("Usuń bilet");
-    private iBiletService biletService;
+    private iTicketService biletService;
     private int ticketID;
     private JButton findByEmailButton;
+    private Date beginTime;
 
     @Autowired
-    public FixTicketWindow(iBiletService biletService, @Value("${property.ticketID:0}") int ticketID,
+    public FixTicketWindow(iTicketService biletService, @Value("${property.ticketID:0}") int ticketID,
                            @Value("${property.findByEmailButton:0}") JButton findByEmailButton) {
         super("Fix errors");
         this.biletService = biletService;
@@ -48,46 +46,35 @@ public class FixTicketWindow extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(false);
-
-        changeHourButton.addActionListener(e -> {
-            changeHourActionListener();
-        });
-
-        deleteTicketButton.addActionListener(e -> {
-            deleteTicketActionListener();
-        });
+        changeHourButton.addActionListener(e -> {changeHourActionListener();});
+        deleteTicketButton.addActionListener(e -> {deleteTicketActionListener();});
     }
 
-
     private void changeHourActionListener()  {
-        int hour, minutes;
-        try{
-            hour = Integer.parseInt(hourTextField.getText());
-        } catch(NumberFormatException nfe){
-            JOptionPane.showMessageDialog(null, "Podano zły format danych (godziny)");
-            return;
-        }
-        try{
-            minutes = Integer.parseInt(minutesTextField.getText());
-        } catch(NumberFormatException nfe){
-            JOptionPane.showMessageDialog(null, "Podano zły format danych (minuty)");
-            return;
-        }
 
-        if(checkIfHourIsCorrect(hour) && checkIfMinutesAreCorrect(minutes)){
-            Date sdf = new Date();
-            try {
-                sdf = new SimpleDateFormat("HH:mm:ss")
-                        .parse(String.valueOf(hour + 1) +":"+ String.valueOf(minutes)+":00");
-                        //hour + 1 because  if I set hour to X then sql sets it to X-1 for some reason
-            } catch(ParseException ex) {
-                System.out.println(ex.getMessage());
-            }
-            System.out.println(sdf.getHours() +":" + sdf.getMinutes());
-            biletService.changeTicketBeginTimeByTicketID(ticketID, sdf);
-        } else {
-            JOptionPane.showMessageDialog(null, "Godziny lub minuty nie zawierają się w dopuszczalnych granicach");
+        String begin = beginTimeTextField.getText();
+        int hour, minutes;
+        try {
+            hour = Integer.parseInt(begin.substring(0,2));
+            minutes = Integer.parseInt(begin.substring(3,5));
+        } catch(NumberFormatException nfe) {
+            System.out.println(nfe.getMessage());
+            return;
         }
+        //hour + 1 because  if I set hour to X then sql sets it to X-1 for some reason
+        if(checkIfHourIsCorrect(hour+1) && checkIfMinutesAreCorrect(minutes)) {
+            try {
+                beginTime = new SimpleDateFormat("HH:mm:ss").parse(begin);
+            } catch(Exception ex) {
+                System.out.println(ex.getMessage());
+                return;
+            }
+            beginTime.setHours(beginTime.getHours() + 1);
+            biletService.changeTicketBeginTimeByTicketID(ticketID, beginTime);
+        } else {
+            JOptionPane.showMessageDialog(null, "Podano nieistniejącą godzine");
+        }
+        this.setVisible(false);
     }
 
     private boolean checkIfHourIsCorrect(int hour){
@@ -124,20 +111,13 @@ public class FixTicketWindow extends JFrame {
         constraints.gridx = 0;
         constraints.gridy = 1;
         constraints.gridwidth = 1;
-        panel.add(hourLabel, constraints);
+        panel.add(beginTimeLabel, constraints);
 
         constraints.gridx = 1;
-        panel.add(hourTextField, constraints);
+        panel.add(beginTimeTextField, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 2;
-        panel.add(minutesLabel, constraints);
-
-        constraints.gridx = 1;
-        panel.add(minutesTextField, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 3;
         panel.add(changeHourButton, constraints);
 
         constraints.gridx = 1;

@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface BiletRepository extends JpaRepository<Bilet, Integer> {
+public interface TicketRepository extends JpaRepository<Bilet, Integer> {
    @Query(
             value = "SELECT * FROM Bilet INNER JOIN " +
                     "Zamówienie ON Bilet.ZamówienieZamowienie_ID = Zamówienie.Zamowienie_ID " +

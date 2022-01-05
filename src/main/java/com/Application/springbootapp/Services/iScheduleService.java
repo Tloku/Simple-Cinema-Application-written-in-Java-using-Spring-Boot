@@ -5,7 +5,7 @@ import com.Application.springbootapp.Entities.Harmonogram;
 import java.util.Date;
 import java.util.List;
 
-public interface iHarmonogramService {
+public interface iScheduleService {
 
     List<Harmonogram> findAllByMovieID(int movieID);
     void addScheduleForMovie(Date beginTime, Date endTime, int movieID, int repetorireID, int cinemaHallID);

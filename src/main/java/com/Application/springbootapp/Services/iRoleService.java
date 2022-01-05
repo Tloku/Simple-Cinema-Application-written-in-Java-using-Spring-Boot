@@ -4,6 +4,6 @@ import com.Application.springbootapp.Entities.Rola;
 
 import java.util.List;
 
-public interface iRolaService {
+public interface iRoleService {
     List<Rola> findAll();
 }

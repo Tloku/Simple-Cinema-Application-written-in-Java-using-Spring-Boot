@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface HarmonogramRepository extends JpaRepository<Harmonogram, Integer> {
+public interface ScheduleRepository extends JpaRepository<Harmonogram, Integer> {
     @Query(
             value = "SELECT * FROM Film INNER JOIN " +
                     "Harmonogram ON Film.Film_ID = Harmonogram.FilmFilm_ID " +

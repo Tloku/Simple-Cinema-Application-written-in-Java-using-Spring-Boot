@@ -6,7 +6,7 @@ import com.Application.springbootapp.Entities.Film;
 import java.util.Date;
 import java.util.List;
 
-public interface iFilmService {
+public interface iMovieService {
 
     List<Film> findAllByRepertoireID(int repertoireID);
     Film addMovie(String title, int length, String description, String studio, Date date, int repertoireID,

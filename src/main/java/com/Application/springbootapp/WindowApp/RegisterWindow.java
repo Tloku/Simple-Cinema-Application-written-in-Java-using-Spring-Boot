@@ -1,7 +1,6 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Services.iRolaService;
-import com.Application.springbootapp.Services.iUżytkownikService;
+import com.Application.springbootapp.Services.iUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import javax.swing.*;
@@ -25,14 +24,12 @@ public class RegisterWindow extends JFrame {
     private JPasswordField passwordField = new JPasswordField(16);
     private JButton registerButton = new JButton("Zarejestruj");
     private JPanel panel = new JPanel(new GridBagLayout());
-    private iRolaService rolaService;
-    private iUżytkownikService uzytkownikService;
+    private iUserService userService;
 
     @Autowired
-    RegisterWindow(iRolaService rolaService, iUżytkownikService uzytkownikService){
+    RegisterWindow(iUserService userService){
         super("Rejestracja");
-        this.rolaService = rolaService;
-        this.uzytkownikService = uzytkownikService;
+        this.userService = userService;
         initComponents();
     }
 
@@ -69,17 +66,17 @@ public class RegisterWindow extends JFrame {
 
         boolean valid = anyBlank(name, surname, email, password);
         if(!valid){
-            uzytkownikService.add(name, surname, email, password, 2);
+            userService.add(name, surname, email, password, 2);
             if(correctLabel.isVisible()){
                 correctLabel.setVisible(false);
             }
             correctLabel.setVisible(true);
             correctLabel.setForeground(Color.GREEN);
             correctLabel.setText("Zarejestrowano!");
-            correctLabel.paintImmediately(correctLabel.getVisibleRect());
+            super.update(this.getGraphics());
             TimeUnit.SECONDS.sleep(1);
             correctLabel.setText("Zamykam okno");
-            correctLabel.paintImmediately(correctLabel.getVisibleRect());
+            super.update(this.getGraphics());
             TimeUnit.MILLISECONDS.sleep(500);
             this.setVisible(false);
         }

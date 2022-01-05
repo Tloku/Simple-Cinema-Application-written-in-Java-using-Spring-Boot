@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface RepertuarKinaRepository extends JpaRepository<RepertuarKina, Integer> {
+public interface RepertoireRepository extends JpaRepository<RepertuarKina, Integer> {
 
     @Query(
             value = "SELECT Repertuar_Kina.Data FROM Repertuar_Kina " +

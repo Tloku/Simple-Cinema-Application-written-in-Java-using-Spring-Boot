@@ -1,7 +1,6 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Services.iHarmonogramService;
-
+import com.Application.springbootapp.Services.iScheduleService;
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -10,18 +9,18 @@ import java.util.Date;
 public class ChangeScheduleTimeWindow extends JFrame {
     private JPanel panel = new JPanel(new GridBagLayout());
     private JLabel beginLabel = new JLabel("Godzina rozpoczęcia: ");
-    private JTextField beginTextField = new JTextField(10);
+    private JTextField beginTextField = new JTextField("HH:MM:SS", 10);
     private JLabel endLabel = new JLabel("Godzina zakończenia: ");
-    private JTextField endTextField = new JTextField(10);
+    private JTextField endTextField = new JTextField("HH:MM:SS", 10);
     private JLabel scheduleIDLabel = new JLabel("ID Harmonogramu");
     private JTextField scheduleIDTextField = new JTextField(5);
-    private iHarmonogramService harmonogramService;
+    private iScheduleService scheduleService;
     private JButton changeButton = new JButton("Zmień");
     private Date beginTime, endTime;
 
-    public ChangeScheduleTimeWindow(iHarmonogramService harmonogramService) {
+    public ChangeScheduleTimeWindow(iScheduleService scheduleService) {
         super("Zmiana godzin grania filmu");
-        this.harmonogramService = harmonogramService;
+        this.scheduleService = scheduleService;
         initComponents();
         initLayout();
     }
@@ -36,10 +35,6 @@ public class ChangeScheduleTimeWindow extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(false);
-
-        beginTextField.setText("HH:MM:SS");
-        endTextField.setText("HH:MM:SS");
-
         changeButton.addActionListener(e -> {changeButtonActionListener();});
     }
 
@@ -53,7 +48,7 @@ public class ChangeScheduleTimeWindow extends JFrame {
             JOptionPane.showMessageDialog(null, "Zły format ID harmonogramu");
             return;
         }
-        try{
+        try {
             beginTime = new SimpleDateFormat("HH:mm:ss").parse(begin);
             endTime = new SimpleDateFormat("HH:mm:ss").parse(end);
         } catch(Exception ex) {
@@ -63,7 +58,7 @@ public class ChangeScheduleTimeWindow extends JFrame {
         beginTime.setHours(beginTime.getHours() + 1);
         endTime.setHours(endTime.getHours() + 1);
 
-        harmonogramService.updateScheduleByID(beginTime, endTime, scheduleID);
+        scheduleService.updateScheduleByID(beginTime, endTime, scheduleID);
         this.setVisible(false);
     }
 

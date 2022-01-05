@@ -2,14 +2,11 @@ package com.Application.springbootapp.WindowApp;
 
 import com.Application.springbootapp.Entities.Film;
 import com.Application.springbootapp.Entities.Gatunek;
-import com.Application.springbootapp.Entities.Harmonogram;
-import com.Application.springbootapp.Services.iFilmService;
-import com.Application.springbootapp.Services.iGatunekService;
-import com.Application.springbootapp.Services.iRepertuarKinaService;
+import com.Application.springbootapp.Services.iMovieService;
+import com.Application.springbootapp.Services.iCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -17,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Stream;
-
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
 @Controller
@@ -32,12 +28,12 @@ public class AddMovieWindow extends JFrame {
     private JLabel studioLabel = new JLabel("Studio: ");
     private JTextField studioTextField = new JTextField(16);
     private JLabel dateLabel = new JLabel("Data wydania: ");
-    private JTextField dataTextField = new JTextField(16);
+    private JTextField dataTextField = new JTextField("YYYY-MM-DD",16);
     private JLabel categoryLabel = new JLabel("Gatunek: ");
     private JComboBox categoryComboBox = new JComboBox();
     private JButton addButton = new JButton("Dodaj film");
-    private iFilmService filmService;
-    private iGatunekService gatunekService;
+    private iMovieService movieService;
+    private iCategoryService categoryService;
     private int repertoireID;
     private List<Gatunek> categoriesList;
     private Vector<String> categoriesListStrings = new Vector<>();
@@ -46,12 +42,12 @@ public class AddMovieWindow extends JFrame {
 
 
     @Autowired
-    public AddMovieWindow(iFilmService filmService, iGatunekService gatunekService,
+    public AddMovieWindow(iMovieService movieService, iCategoryService categoryService,
                           @Value("${property.repertoireID:0}") int repertoireID) {
         super("Dodaj film");
-        this.filmService = filmService;
+        this.movieService = movieService;
         this.repertoireID = repertoireID;
-        this.gatunekService = gatunekService;
+        this.categoryService = categoryService;
         initComponents();
         initLayout();
     }
@@ -68,15 +64,8 @@ public class AddMovieWindow extends JFrame {
         this.setVisible(false);
         initCategoryComboBox();
         addButton.setEnabled(false);
-        dataTextField.setText("YYYY-MM-DD");
-
-        addButton.addActionListener(e -> {
-            addButtonActionListener();
-        });
-
-        categoryComboBox.addActionListener(e ->{
-            categoryComboBoxActionListener();
-        });
+        addButton.addActionListener(e -> {addButtonActionListener();});
+        categoryComboBox.addActionListener(e ->{categoryComboBoxActionListener();});
     }
 
     private void addButtonActionListener() {
@@ -85,7 +74,6 @@ public class AddMovieWindow extends JFrame {
         String description = descriptionTextField.getText();
         String studio = studioTextField.getText();
         String date = dataTextField.getText();
-
         boolean valid = anyBlank(title, studio, date);
         if(!valid){
             try{
@@ -101,10 +89,9 @@ public class AddMovieWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, "Nie podano prawidlowej dlugosci filmu");
                 return;
             }
-            //TODO program nie chce dodać filmu jeśli ten ma długość taką samą jak jakiś inny film
-            Film film = filmService.addMovie(title, length, description, studio, data, repertoireID, categoryID);
+            Film movie = movieService.addMovie(title, length, description, studio, data, repertoireID, categoryID);
             this.setVisible(false);
-            JOptionPane.showMessageDialog(null,"ID nowo dodanego filmu to: " + film.getFilmID() +"\n" +
+            JOptionPane.showMessageDialog(null,"ID nowo dodanego filmu to: " + movie.getFilmID() +"\n" +
                     "Musisz dodać harmonogram dla tego filmu");
         }
         else {
@@ -172,11 +159,10 @@ public class AddMovieWindow extends JFrame {
     }
 
     private void initCategoryComboBox() {
-        categoriesList = gatunekService.findAll();
+        categoriesList = categoryService.findAll();
         categoriesListStrings.add("ID/Nazwa");
-
-        for(int i = 0; i < categoriesList.size(); i++) {
-            categoriesListStrings.add(categoriesList.get(i).getGatunekID() + ". " + categoriesList.get(i).getNazwa());
+        for(Gatunek category : categoriesList) {
+            categoriesListStrings.add(category.getGatunekID() + ". " + category.getNazwa());
         }
         categoryComboBox = new JComboBox(categoriesListStrings);
     }
@@ -191,10 +177,6 @@ public class AddMovieWindow extends JFrame {
             System.out.println(ex.getMessage());
             isNumeric = false;
         }
-        if(isNumeric) {
-            addButton.setEnabled(true);
-        } else {
-            addButton.setEnabled(false);
-        }
+        addButton.setEnabled(true & isNumeric);
     }
 }

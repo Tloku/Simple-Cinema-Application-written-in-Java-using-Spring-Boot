@@ -4,7 +4,7 @@ import com.Application.springbootapp.Entities.Gatunek;
 
 import java.util.List;
 
-public interface iGatunekService {
+public interface iCategoryService {
 
     public List<Gatunek> findAll();
 }

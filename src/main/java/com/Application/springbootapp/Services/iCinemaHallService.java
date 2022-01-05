@@ -1,4 +1,4 @@
 package com.Application.springbootapp.Services;
 
-public interface iSalaKinowaService {
+public interface iCinemaHallService {
 }

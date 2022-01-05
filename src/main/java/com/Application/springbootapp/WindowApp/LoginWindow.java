@@ -19,33 +19,31 @@ public class LoginWindow extends JFrame {
     private JPasswordField passwordTextField = new JPasswordField(16);
     private JButton loginButton = new JButton("Zaloguj");
     private JButton registerButton = new JButton("Zarejestruj");
-    private iRolaService rolaService;
-    private iUżytkownikService uzytkownikService;
-    private iZamówienieService zamowienieService;
-    private iBiletService biletService;
-    private iFilmService filmService;
-    private iHarmonogramService harmonogramService;
-    private iRepertuarKinaService repertuarKinaService;
-    private iGatunekService gatunekService;
+    private iRoleService roleService;
+    private iUserService userService;
+    private iOrderService orderService;
+    private iTicketService ticketService;
+    private iMovieService movieService;
+    private iScheduleService scheduleService;
+    private iRepertoireService repertoireService;
+    private iCategoryService categoryService;
 
     private JLabel correctLabel = new JLabel("Zły email lub hasło");
     private RegisterWindow regWin;
 
     @Autowired
-    public LoginWindow(iRolaService rolaService, iUżytkownikService uzytkownikService, iZamówienieService zamowienieService,
-                       iBiletService biletService, iFilmService filmService, iHarmonogramService harmonogramService,
-                       iRepertuarKinaService repertuarKinaService, iGatunekService gatunekService) {
+    public LoginWindow(iRoleService roleService, iUserService userService, iOrderService orderService,
+                       iTicketService ticketService, iMovieService movieService, iScheduleService scheduleService,
+                       iRepertoireService repertoireService, iCategoryService categoryService) {
         super("Logowanie");
-
-        this.rolaService = rolaService;
-        this.uzytkownikService = uzytkownikService;
-        this.zamowienieService = zamowienieService;
-        this.biletService = biletService;
-        this.filmService = filmService;
-        this.harmonogramService = harmonogramService;
-        this.repertuarKinaService = repertuarKinaService;
-        this.gatunekService = gatunekService;
-
+        this.roleService = roleService;
+        this.userService = userService;
+        this.orderService = orderService;
+        this.ticketService = ticketService;
+        this.movieService = movieService;
+        this.scheduleService = scheduleService;
+        this.repertoireService = repertoireService;
+        this.categoryService = categoryService;
         initComponents();
         initLayout();
         this.setVisible(true);
@@ -99,11 +97,9 @@ public class LoginWindow extends JFrame {
         correctLabel.setForeground(Color.RED);
         correctLabel.setFont(new Font("Serif", Font.BOLD, 13));
         correctLabel.setVisible(false);
-        regWin = new RegisterWindow(rolaService, uzytkownikService);
+        regWin = new RegisterWindow(userService);
 
-        registerButton.addActionListener(e -> {
-            regWin.setVisible(true);
-        });
+        registerButton.addActionListener(e -> {regWin.setVisible(true);});
 
         loginButton.addActionListener(e -> {
             String email = emailTextField.getText();
@@ -124,27 +120,23 @@ public class LoginWindow extends JFrame {
     }
 
     private void loginButtonActionListener(String email, String password) throws InterruptedException {
-        //TODO logika logowania się, pobieranie danych z bazy i sprawdzenie
-        // czy haslo dla emailu jest prawidłowe
-        Użytkownik uzytkownik = uzytkownikService.findUzytkownikByEmail(email);
-
+        Użytkownik uzytkownik = userService.findUzytkownikByEmail(email);
         if(uzytkownik.getHaslo().equals(password)){
-            correctLabel.setVisible(true);
             correctLabel.setForeground(Color.GREEN);
             correctLabel.setText("Zalogowano!");
-            correctLabel.paintImmediately(correctLabel.getVisibleRect());
+            correctLabel.setVisible(true);
+            super.update(this.getGraphics());
             TimeUnit.SECONDS.sleep(1);
-            TimeUnit.MILLISECONDS.sleep(500);
             this.setVisible(false);
 
             if(uzytkownik.getRola().getRolaID() == 1) {
-                EmployeeWindow employeeWindow = new EmployeeWindow(zamowienieService, biletService, filmService,
-                         harmonogramService, uzytkownikService, repertuarKinaService, gatunekService);
+                EmployeeWindow employeeWindow = new EmployeeWindow(orderService, ticketService, movieService,
+                        scheduleService, repertoireService, categoryService);
                 employeeWindow.setVisible(true);
                 System.out.println("Otworzylem okno employee");
             } else if (uzytkownik.getRola().getRolaID() == 2) {
-                ClientWindow clientWindow = new ClientWindow(zamowienieService, biletService, filmService,
-                        harmonogramService, repertuarKinaService, uzytkownik.getUzytkownikID());
+                ClientWindow clientWindow = new ClientWindow(orderService, ticketService, movieService,
+                        scheduleService, repertoireService, uzytkownik.getUzytkownikID());
                 clientWindow.setVisible(true);
                 System.out.println("Otworzylem okno klient");
             }
@@ -152,7 +144,7 @@ public class LoginWindow extends JFrame {
             correctLabel.setVisible(true);
             correctLabel.setForeground(Color.RED);
             correctLabel.setText("Zle haslo!");
-            correctLabel.paintImmediately(correctLabel.getVisibleRect());
+            super.update(this.getGraphics());
         }
     }
 }

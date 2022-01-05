@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface FilmRepository extends JpaRepository<Film, Integer> {
+public interface MovieRepository extends JpaRepository<Film, Integer> {
 
     @Query(
             value = "SELECT * FROM Film INNER JOIN Repertuar_kina ON Film.Repertuar_kinaRepertuar_Kina_ID = " +
@@ -32,9 +32,9 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
 
     @Modifying
     @Query(
-            value = "insert into Film(Tytul, Dlugosc, Opis, Wytwornia, " +
+            value = "INSERT INTO Film(Tytul, Dlugosc, Opis, Wytwornia, " +
                     " Rok_wydania, Repertuar_kinaRepertuar_kina_ID, GatunekGatunek_ID) " +
-                    " Values(:title, :length, :description, :studio, :date, :repertoireID, :categoryID)",
+                    " VALUES(:title, :length, :description, :studio, :date, :repertoireID, :categoryID)",
             nativeQuery = true
     )
     @Transactional

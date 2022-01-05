@@ -24,7 +24,7 @@ public class Bilet {
     private int biletID;
 
     @Column(
-            name = "Godzina_rozpoczecia",
+            name = "Godzina_rozpoczęcia",
             columnDefinition = "time"
     )
     @Temporal(TemporalType.TIME)

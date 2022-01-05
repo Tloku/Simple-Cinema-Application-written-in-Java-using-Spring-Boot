@@ -4,7 +4,7 @@ import com.Application.springbootapp.Entities.Bilet;
 import java.util.Date;
 import java.util.List;
 
-public interface iBiletService {
+public interface iTicketService {
 
     List<Bilet> findTicketsByOrderID(int order_ID);
     void deleteTicketByTicketID(int ticketID);

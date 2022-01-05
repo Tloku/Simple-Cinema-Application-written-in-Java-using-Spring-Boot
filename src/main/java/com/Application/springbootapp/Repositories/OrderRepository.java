@@ -13,9 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ZamówienieRepository extends JpaRepository<Zamówienie, Integer> {
+public interface OrderRepository extends JpaRepository<Zamówienie, Integer> {
     @Query(
-            value = "Select * from Zamówienie INNER JOIN Użytkownik ON Zamówienie.UżytkownikUżytkownik_ID = " +
+            value = "SELECT * FROM Zamówienie INNER JOIN Użytkownik ON Zamówienie.UżytkownikUżytkownik_ID = " +
                     "Użytkownik.Użytkownik_ID WHERE Użytkownik.email = ?1",
             nativeQuery = true
     )
