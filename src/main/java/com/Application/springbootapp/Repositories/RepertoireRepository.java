@@ -1,15 +1,14 @@
 package com.Application.springbootapp.Repositories;
 
-import com.Application.springbootapp.Entities.RepertuarKina;
+import com.Application.springbootapp.Entities.Repertoire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.List;
 
 @Repository
-public interface RepertoireRepository extends JpaRepository<RepertuarKina, Integer> {
+public interface RepertoireRepository extends JpaRepository<Repertoire, Integer> {
 
     @Query(
             value = "SELECT Repertuar_Kina.Data FROM Repertuar_Kina " +

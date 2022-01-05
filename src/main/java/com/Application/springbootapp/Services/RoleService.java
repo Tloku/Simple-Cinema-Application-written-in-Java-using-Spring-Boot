@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Rola;
+import com.Application.springbootapp.Entities.Role;
 import com.Application.springbootapp.Repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class RoleService implements iRoleService {
     private RoleRepository roleRepository;
 
     @Override
-    public List<Rola> findAll() {
+    public List<Role> findAll() {
         return roleRepository.findAll();
     }
 }

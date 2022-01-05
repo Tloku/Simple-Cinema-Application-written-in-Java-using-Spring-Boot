@@ -1,8 +1,8 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Entities.Film;
-import com.Application.springbootapp.Entities.Harmonogram;
-import com.Application.springbootapp.Entities.RepertuarKina;
+import com.Application.springbootapp.Entities.Movie;
+import com.Application.springbootapp.Entities.Schedule;
+import com.Application.springbootapp.Entities.Repertoire;
 import com.Application.springbootapp.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ public class ClientWindow extends JFrame {
     private int winHeight = 300;
     private final float ORDER_VALUE = 20;
 
-    private List<RepertuarKina> cinemaRepertoiresList;
+    private List<Repertoire> cinemaRepertoiresList;
     private Vector<String> cinemaRepertoireStrings = new Vector<>();
     JPanel panel = new JPanel();
     private String[] moviesTableColumnNames = {"Film_id","Tytuł","Harmonogram_ID","Godzina_rozpoczecia","Godzina_zakończenia"};
@@ -41,8 +41,8 @@ public class ClientWindow extends JFrame {
     private int orderID = 0;
     private int scheduleID;
     int orderCost = 0;
-    List<Film> moviesList;
-    List<Harmonogram> moviesData = new ArrayList<>();
+    List<Movie> moviesList;
+    List<Schedule> moviesData = new ArrayList<>();
     List<Integer> schedulesIDList = new ArrayList<>();
     Date date = new Date();
 
@@ -113,9 +113,9 @@ public class ClientWindow extends JFrame {
                 orderService.addOrder(date, 0, "Karta", userID);
                 orderID = orderService.findOrderIDByDateAndUserID(sdf.format(date), userID);
             }
-            Harmonogram schedule = scheduleService.findScheduleByID(scheduleID);
+            Schedule schedule = scheduleService.findScheduleByID(scheduleID);
             int movieID = movieService.findByScheduleID(scheduleID);
-            Date scheduleTime = schedule.getGodzinaStartu();
+            Date scheduleTime = schedule.getBeginTime();
             orderCost += ORDER_VALUE;
             ticketService.addTicket(scheduleTime, rand.nextInt(100)+1, orderID,
                     rand.nextInt(5) + 1, movieID, userID);
@@ -140,16 +140,16 @@ public class ClientWindow extends JFrame {
             moviesList = movieService.findAllByRepertoireID(repertoireID);
         }
 
-        List<Harmonogram> schedulesForOneMovie;
+        List<Schedule> schedulesForOneMovie;
         moviesData.clear();
         moviesTableModel.setRowCount(0);
 
-        for(Film movie : moviesList) {
-            schedulesForOneMovie = scheduleService.findAllByMovieID(movie.getFilmID());
-            for(Harmonogram schedule : schedulesForOneMovie) {
-                Film tmpMovie = new Film();
-                tmpMovie.setFilmID(movie.getFilmID());
-                tmpMovie.setTytul(movie.getTytul());
+        for(Movie movie : moviesList) {
+            schedulesForOneMovie = scheduleService.findAllByMovieID(movie.getMovieID());
+            for(Schedule schedule : schedulesForOneMovie) {
+                Movie tmpMovie = new Movie();
+                tmpMovie.setMovieID(movie.getMovieID());
+                tmpMovie.setTitle(movie.getTitle());
                 schedule.setFilm(tmpMovie);
                 moviesData.add(schedule);
             }
@@ -161,14 +161,14 @@ public class ClientWindow extends JFrame {
 
     private void addMoviesToTable() {
         schedulesIDList.clear();
-        for(Harmonogram movie : moviesData){
+        for(Schedule movie : moviesData){
             moviesTableModel.addRow(new Object[] {
-                    movie.getFilm().getFilmID(),
-                    movie.getFilm().getTytul(),
-                    movie.getHarmonogramID(),
-                    movie.getGodzinaStartu(),
-                    movie.getGodzinaZakonczenia() });
-            schedulesIDList.add(movie.getHarmonogramID());
+                    movie.getFilm().getMovieID(),
+                    movie.getFilm().getTitle(),
+                    movie.getScheduleID(),
+                    movie.getBeginTime(),
+                    movie.getEndTime() });
+            schedulesIDList.add(movie.getScheduleID());
         }
         moviesTable.repaint();
     }
@@ -176,8 +176,8 @@ public class ClientWindow extends JFrame {
     private void initComboBox() {
         cinemaRepertoiresList = repertoireService.findAllRepertoires();
         cinemaRepertoireStrings.add("ID/Data");
-        for(RepertuarKina repertoire : cinemaRepertoiresList) {
-            cinemaRepertoireStrings.add(repertoire.getRepertuarKinaID() + ". " + repertoire.getData());
+        for(Repertoire repertoire : cinemaRepertoiresList) {
+            cinemaRepertoireStrings.add(repertoire.getRepertoireID() + ". " + repertoire.getDate());
         }
         repertoireComboBox = new JComboBox(cinemaRepertoireStrings);
     }

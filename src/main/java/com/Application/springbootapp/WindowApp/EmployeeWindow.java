@@ -35,10 +35,10 @@ public class EmployeeWindow extends JFrame {
     private JTextField ticketIDTextField = new JTextField(5);
     private String[] ordersTableColumnNames = {"Zamówienie_ID", "Data zamówienia", "Bilet_ID", "Godzina_rozpoczęcia"};
     private DefaultTableModel ordersTableModel;
-    List<Zamówienie> ordersList;
-    List<Bilet> ticketsList = new ArrayList<>();
+    List<Order> ordersList;
+    List<Ticket> ticketsList = new ArrayList<>();
 
-    private List<RepertuarKina> cinemaRepertoiresList;
+    private List<Repertoire> cinemaRepertoiresList;
     private Vector<String> cinemaRepertoireStrings = new Vector<>();
     private JTable moviesTable;
     private JComboBox repertoireComboBox = new JComboBox();
@@ -51,8 +51,8 @@ public class EmployeeWindow extends JFrame {
     private DefaultTableModel moviesTableModel;
     public int ticketID;
     private int repertoireID;
-    List<Film> moviesList;
-    List<Harmonogram> moviesData = new ArrayList<>();
+    List<Movie> moviesList;
+    List<Schedule> moviesData = new ArrayList<>();
 
     @Autowired
     EmployeeWindow(iOrderService orderService, iTicketService ticketService, iMovieService movieService,
@@ -90,8 +90,8 @@ public class EmployeeWindow extends JFrame {
     private void initComboBox() {
         cinemaRepertoiresList = repertuarKinaService.findAllRepertoires();
         cinemaRepertoireStrings.add("ID/Data");
-        for(RepertuarKina cinemaRepertoire : cinemaRepertoiresList) {
-            cinemaRepertoireStrings.add(cinemaRepertoire.getRepertuarKinaID() + ". " + cinemaRepertoire.getData());
+        for(Repertoire cinemaRepertoire : cinemaRepertoiresList) {
+            cinemaRepertoireStrings.add(cinemaRepertoire.getRepertoireID() + ". " + cinemaRepertoire.getDate());
         }
         repertoireComboBox = new JComboBox(cinemaRepertoireStrings);
     }
@@ -120,17 +120,17 @@ public class EmployeeWindow extends JFrame {
 
         if(!email.isBlank() || !email.isEmpty()) {
             ordersList = orderService.findOrderByEmail(email);
-            List<Bilet> ticketsFromOneOrder;
+            List<Ticket> ticketsFromOneOrder;
             ticketsList.clear();
             ordersTableModel.setRowCount(0);
 
-            for(Zamówienie order : ordersList) {
-                ticketsFromOneOrder = ticketService.findTicketsByOrderID(order.getZamowienieID());
-                for(Bilet ticket : ticketsFromOneOrder) {
-                    Zamówienie tmpOrder = new Zamówienie();
-                    tmpOrder.setZamowienieID(order.getZamowienieID());
-                    tmpOrder.setDataZamowienia(order.getDataZamowienia());
-                    ticket.setZamowienie(tmpOrder);
+            for(Order order : ordersList) {
+                ticketsFromOneOrder = ticketService.findTicketsByOrderID(order.getOrderID());
+                for(Ticket ticket : ticketsFromOneOrder) {
+                    Order tmpOrder = new Order();
+                    tmpOrder.setOrderID(order.getOrderID());
+                    tmpOrder.setOrderDate(order.getOrderDate());
+                    ticket.setOrder(tmpOrder);
                     ticketsList.add(ticket);
                 }
             }
@@ -142,24 +142,24 @@ public class EmployeeWindow extends JFrame {
     }
 
     private void addTicketDataToTable() {
-        for(Bilet ticket : ticketsList){
+        for(Ticket ticket : ticketsList){
             ordersTableModel.addRow(new Object[] {
-                    ticket.getZamowienie().getZamowienieID(),
-                    ticket.getZamowienie().getDataZamowienia(),
-                    ticket.getBiletID(),
-                    ticket.getGodzinaRozpoczecia() });
+                    ticket.getOrder().getOrderID(),
+                    ticket.getOrder().getOrderDate(),
+                    ticket.getTicketID(),
+                    ticket.getBeginTime() });
         }
         ordersTable.repaint();
     }
 
     private void addMoviesToTable() {
-        for(Harmonogram movie : moviesData){
+        for(Schedule movie : moviesData){
             moviesTableModel.addRow(new Object[] {
-                    movie.getFilm().getFilmID(),
-                    movie.getFilm().getTytul(),
-                    movie.getHarmonogramID(),
-                    movie.getGodzinaStartu(),
-                    movie.getGodzinaZakonczenia() });
+                    movie.getFilm().getMovieID(),
+                    movie.getFilm().getTitle(),
+                    movie.getScheduleID(),
+                    movie.getBeginTime(),
+                    movie.getEndTime() });
         }
         moviesTable.repaint();
     }
@@ -183,8 +183,8 @@ public class EmployeeWindow extends JFrame {
 
     private boolean checkIfNumberIsSomeTicketID() {
         List<Integer> ticketIDs = new ArrayList<>();
-        for(Bilet ticket : ticketsList){
-            ticketIDs.add(ticket.getBiletID());
+        for(Ticket ticket : ticketsList){
+            ticketIDs.add(ticket.getTicketID());
         }
         return ticketIDs.contains(ticketID);
     }
@@ -260,16 +260,16 @@ public class EmployeeWindow extends JFrame {
         if(isNumeric) {
             moviesList = movieService.findAllByRepertoireID(repertoireID);
         }
-        List<Harmonogram> schedulesForOneMovie;
+        List<Schedule> schedulesForOneMovie;
         moviesData.clear();
         moviesTableModel.setRowCount(0);
 
-        for(Film movie : moviesList) {
-            schedulesForOneMovie = scheduleService.findAllByMovieID(movie.getFilmID());
-            for(Harmonogram schedule : schedulesForOneMovie) {
-                Film tmpMovie = new Film();
-                tmpMovie.setFilmID(movie.getFilmID());
-                tmpMovie.setTytul(movie.getTytul());
+        for(Movie movie : moviesList) {
+            schedulesForOneMovie = scheduleService.findAllByMovieID(movie.getMovieID());
+            for(Schedule schedule : schedulesForOneMovie) {
+                Movie tmpMovie = new Movie();
+                tmpMovie.setMovieID(movie.getMovieID());
+                tmpMovie.setTitle(movie.getTitle());
                 schedule.setFilm(tmpMovie);
                 moviesData.add(schedule);
             }

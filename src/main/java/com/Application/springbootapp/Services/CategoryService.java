@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Gatunek;
+import com.Application.springbootapp.Entities.Category;
 import com.Application.springbootapp.Repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class CategoryService implements iCategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Gatunek> findAll() {
+    public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 }

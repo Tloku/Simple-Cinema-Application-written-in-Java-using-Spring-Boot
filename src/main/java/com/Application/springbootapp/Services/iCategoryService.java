@@ -1,10 +1,10 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Gatunek;
+import com.Application.springbootapp.Entities.Category;
 
 import java.util.List;
 
 public interface iCategoryService {
 
-    public List<Gatunek> findAll();
+    public List<Category> findAll();
 }

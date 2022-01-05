@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Film;
+import com.Application.springbootapp.Entities.Movie;
 import com.Application.springbootapp.Repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,19 +15,19 @@ public class MovieService implements iMovieService {
     private MovieRepository movieRepository;
 
     @Override
-    public List<Film> findAllByRepertoireID(int repertoireID) {
+    public List<Movie> findAllByRepertoireID(int repertoireID) {
         return movieRepository.findAllByRepertoireID(repertoireID);
     }
 
     @Override
-    public Film addMovie(String title, int length, String description, String studio, Date date, int repertoireID,
-                         int categoryID) {
+    public Movie addMovie(String title, int length, String description, String studio, Date date, int repertoireID,
+                          int categoryID) {
         movieRepository.add(title, length, description, studio, date, repertoireID, categoryID);
         return findByTitle(title);
     }
 
     @Override
-    public Film findByTitle(String title) {
+    public Movie findByTitle(String title) {
         return movieRepository.findByMovieTitle(title);
     }
 

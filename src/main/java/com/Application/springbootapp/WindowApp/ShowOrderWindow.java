@@ -1,7 +1,7 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Entities.Bilet;
-import com.Application.springbootapp.Entities.Film;
+import com.Application.springbootapp.Entities.Ticket;
+import com.Application.springbootapp.Entities.Movie;
 import com.Application.springbootapp.Services.iTicketService;
 import com.Application.springbootapp.Services.iMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,24 +55,24 @@ public class ShowOrderWindow extends JFrame {
     }
 
     private void initTableData() {
-        List<Bilet> ticketsList = ticketService.findTicketsByOrderID(orderID);
+        List<Ticket> ticketsList = ticketService.findTicketsByOrderID(orderID);
         List<String> moviesList = new ArrayList<>();
         List<Date> datesList = new ArrayList<>();
-        for(Bilet ticket : ticketsList){
-            moviesList.add(ticketService.findMovieTitleByTicketID(ticket.getBiletID()));
+        for(Ticket ticket : ticketsList){
+            moviesList.add(ticketService.findMovieTitleByTicketID(ticket.getTicketID()));
         }
 
         for(int i = 0; i < moviesList.size(); i++) {
-            Film film = movieService.findByTitle(moviesList.get(i));
-            datesList.add(movieService.findRepertoireDateByMovieIDAndTicketID(film.getFilmID(), ticketsList.get(i).getBiletID()));
+            Movie movie = movieService.findByTitle(moviesList.get(i));
+            datesList.add(movieService.findRepertoireDateByMovieIDAndTicketID(movie.getMovieID(), ticketsList.get(i).getTicketID()));
         }
 
         for(int i = 0; i < ticketsList.size(); i++){
             ordersTableModel.addRow(new Object[] {
-                    ticketsList.get(i).getBiletID(),
+                    ticketsList.get(i).getTicketID(),
                     moviesList.get(i),
                     datesList.get(i),
-                    ticketsList.get(i).getGodzinaRozpoczecia()
+                    ticketsList.get(i).getBeginTime()
             });
         }
         ordersTable.repaint();

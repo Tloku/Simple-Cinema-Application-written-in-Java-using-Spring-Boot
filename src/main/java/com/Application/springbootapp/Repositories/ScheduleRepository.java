@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Repositories;
 
-import com.Application.springbootapp.Entities.Harmonogram;
+import com.Application.springbootapp.Entities.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,14 +12,14 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface ScheduleRepository extends JpaRepository<Harmonogram, Integer> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query(
             value = "SELECT * FROM Film INNER JOIN " +
                     "Harmonogram ON Film.Film_ID = Harmonogram.FilmFilm_ID " +
                     "WHERE Film.Film_ID = ?1",
             nativeQuery = true
     )
-    List<Harmonogram> findAllByMovieID(int movieID);
+    List<Schedule> findAllByMovieID(int movieID);
 
 
     @Modifying
@@ -61,6 +61,6 @@ public interface ScheduleRepository extends JpaRepository<Harmonogram, Integer> 
                     "WHERE Harmonogram.Harmonogram_ID = ?1",
             nativeQuery = true
     )
-    Harmonogram findByScheduleID(int scheduleID);
+    Schedule findByScheduleID(int scheduleID);
 
 }

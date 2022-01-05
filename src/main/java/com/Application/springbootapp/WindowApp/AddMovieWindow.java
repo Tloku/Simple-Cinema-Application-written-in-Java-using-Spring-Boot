@@ -1,7 +1,7 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Entities.Film;
-import com.Application.springbootapp.Entities.Gatunek;
+import com.Application.springbootapp.Entities.Movie;
+import com.Application.springbootapp.Entities.Category;
 import com.Application.springbootapp.Services.iMovieService;
 import com.Application.springbootapp.Services.iCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class AddMovieWindow extends JFrame {
     private iMovieService movieService;
     private iCategoryService categoryService;
     private int repertoireID;
-    private List<Gatunek> categoriesList;
+    private List<Category> categoriesList;
     private Vector<String> categoriesListStrings = new Vector<>();
     private int categoryID;
     private Date data;
@@ -89,9 +89,9 @@ public class AddMovieWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, "Nie podano prawidlowej dlugosci filmu");
                 return;
             }
-            Film movie = movieService.addMovie(title, length, description, studio, data, repertoireID, categoryID);
+            Movie movie = movieService.addMovie(title, length, description, studio, data, repertoireID, categoryID);
             this.setVisible(false);
-            JOptionPane.showMessageDialog(null,"ID nowo dodanego filmu to: " + movie.getFilmID() +"\n" +
+            JOptionPane.showMessageDialog(null,"ID nowo dodanego filmu to: " + movie.getMovieID() +"\n" +
                     "Musisz dodać harmonogram dla tego filmu");
         }
         else {
@@ -161,8 +161,8 @@ public class AddMovieWindow extends JFrame {
     private void initCategoryComboBox() {
         categoriesList = categoryService.findAll();
         categoriesListStrings.add("ID/Nazwa");
-        for(Gatunek category : categoriesList) {
-            categoriesListStrings.add(category.getGatunekID() + ". " + category.getNazwa());
+        for(Category category : categoriesList) {
+            categoriesListStrings.add(category.getCategoryID() + ". " + category.getName());
         }
         categoryComboBox = new JComboBox(categoriesListStrings);
     }

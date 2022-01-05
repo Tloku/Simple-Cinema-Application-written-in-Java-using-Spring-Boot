@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Repositories;
 
-import com.Application.springbootapp.Entities.Bilet;
+import com.Application.springbootapp.Entities.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,14 +12,14 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface TicketRepository extends JpaRepository<Bilet, Integer> {
+public interface TicketRepository extends JpaRepository<Ticket, Integer> {
    @Query(
             value = "SELECT * FROM Bilet INNER JOIN " +
                     "Zamówienie ON Bilet.ZamówienieZamowienie_ID = Zamówienie.Zamowienie_ID " +
                     "WHERE Zamówienie.Zamowienie_ID = ?1",
             nativeQuery = true
     )
-    public List<Bilet> findByOrderID(int order_id);
+    public List<Ticket> findByOrderID(int order_id);
 
 
    @Modifying

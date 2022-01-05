@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Repositories;
 
-import com.Application.springbootapp.Entities.Użytkownik;
+import com.Application.springbootapp.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Użytkownik, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Modifying
     @Query(
@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<Użytkownik, Integer> {
             value = "SELECT * FROM użytkownik u WHERE u.email = ?1",
             nativeQuery = true
     )
-    Użytkownik findByEmail(String email);
+    User findByEmail(String email);
 
     @Query(
             value = "SELECT u.RolaRola_ID FROM użytkownik u WHERE u.email = ?1",

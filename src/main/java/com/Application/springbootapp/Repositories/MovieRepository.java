@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Repositories;
 
-import com.Application.springbootapp.Entities.Film;
+import com.Application.springbootapp.Entities.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Film, Integer> {
+public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     @Query(
             value = "SELECT * FROM Film INNER JOIN Repertuar_kina ON Film.Repertuar_kinaRepertuar_Kina_ID = " +
@@ -20,7 +20,7 @@ public interface MovieRepository extends JpaRepository<Film, Integer> {
                     "WHERE Repertuar_kina.Repertuar_kina_ID = ?1",
             nativeQuery = true
     )
-    public List<Film> findAllByRepertoireID(int repertoireID);
+    public List<Movie> findAllByRepertoireID(int repertoireID);
 
     @Query(
             value = "SELECT Film.Film_ID FROM Film INNER JOIN Harmonogram ON Film.Film_ID = " +
@@ -46,7 +46,7 @@ public interface MovieRepository extends JpaRepository<Film, Integer> {
             value = "SELECT * FROM Film WHERE Film.tytul = ?1",
             nativeQuery = true
     )
-    public Film findByMovieTitle(String title);
+    public Movie findByMovieTitle(String title);
 
 
     @Modifying

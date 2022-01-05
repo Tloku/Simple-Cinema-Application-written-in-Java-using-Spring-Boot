@@ -1,6 +1,6 @@
 package com.Application.springbootapp.WindowApp;
 
-import com.Application.springbootapp.Entities.Użytkownik;
+import com.Application.springbootapp.Entities.User;
 import com.Application.springbootapp.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -120,8 +120,8 @@ public class LoginWindow extends JFrame {
     }
 
     private void loginButtonActionListener(String email, String password) throws InterruptedException {
-        Użytkownik uzytkownik = userService.findUzytkownikByEmail(email);
-        if(uzytkownik.getHaslo().equals(password)){
+        User uzytkownik = userService.findUzytkownikByEmail(email);
+        if(uzytkownik.getPassword().equals(password)){
             correctLabel.setForeground(Color.GREEN);
             correctLabel.setText("Zalogowano!");
             correctLabel.setVisible(true);
@@ -129,14 +129,14 @@ public class LoginWindow extends JFrame {
             TimeUnit.SECONDS.sleep(1);
             this.setVisible(false);
 
-            if(uzytkownik.getRola().getRolaID() == 1) {
+            if(uzytkownik.getRola().getRoleID() == 1) {
                 EmployeeWindow employeeWindow = new EmployeeWindow(orderService, ticketService, movieService,
                         scheduleService, repertoireService, categoryService);
                 employeeWindow.setVisible(true);
                 System.out.println("Otworzylem okno employee");
-            } else if (uzytkownik.getRola().getRolaID() == 2) {
+            } else if (uzytkownik.getRola().getRoleID() == 2) {
                 ClientWindow clientWindow = new ClientWindow(orderService, ticketService, movieService,
-                        scheduleService, repertoireService, uzytkownik.getUzytkownikID());
+                        scheduleService, repertoireService, uzytkownik.getUserID());
                 clientWindow.setVisible(true);
                 System.out.println("Otworzylem okno klient");
             }

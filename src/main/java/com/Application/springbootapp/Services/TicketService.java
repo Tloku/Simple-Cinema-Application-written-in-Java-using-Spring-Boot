@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Bilet;
+import com.Application.springbootapp.Entities.Ticket;
 import com.Application.springbootapp.Repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class TicketService implements iTicketService {
     private TicketRepository ticketRepository;
 
     @Override
-    public List<Bilet> findTicketsByOrderID(int order_ID) {
+    public List<Ticket> findTicketsByOrderID(int order_ID) {
         return ticketRepository.findByOrderID(order_ID);
     }
 

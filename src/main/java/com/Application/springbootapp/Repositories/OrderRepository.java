@@ -1,7 +1,6 @@
 package com.Application.springbootapp.Repositories;
 
-import com.Application.springbootapp.Entities.Zamówienie;
-import jdk.jfr.MetadataDefinition;
+import com.Application.springbootapp.Entities.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,13 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Zamówienie, Integer> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query(
             value = "SELECT * FROM Zamówienie INNER JOIN Użytkownik ON Zamówienie.UżytkownikUżytkownik_ID = " +
                     "Użytkownik.Użytkownik_ID WHERE Użytkownik.email = ?1",
             nativeQuery = true
     )
-    List<Zamówienie> findByEmail(String email);
+    List<Order> findByEmail(String email);
 
 
     @Modifying

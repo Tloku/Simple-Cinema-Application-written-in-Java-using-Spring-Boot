@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Harmonogram;
+import com.Application.springbootapp.Entities.Schedule;
 import com.Application.springbootapp.Repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +14,7 @@ public class ScheduleService implements iScheduleService {
     private ScheduleRepository scheduleRepository;
 
     @Override
-    public List<Harmonogram> findAllByMovieID(int movieID) {
+    public List<Schedule> findAllByMovieID(int movieID) {
         return scheduleRepository.findAllByMovieID(movieID);
     }
 
@@ -34,7 +34,7 @@ public class ScheduleService implements iScheduleService {
     }
 
     @Override
-    public Harmonogram findScheduleByID(int scheduleID) {
+    public Schedule findScheduleByID(int scheduleID) {
         return scheduleRepository.findByScheduleID(scheduleID);
     }
 }

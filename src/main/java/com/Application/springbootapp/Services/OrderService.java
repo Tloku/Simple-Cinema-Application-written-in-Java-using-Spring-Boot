@@ -1,6 +1,6 @@
 package com.Application.springbootapp.Services;
 
-import com.Application.springbootapp.Entities.Zamówienie;
+import com.Application.springbootapp.Entities.Order;
 import com.Application.springbootapp.Repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class OrderService implements iOrderService {
     @Autowired
     private OrderRepository zamowienieRepository;
 
-    public List<Zamówienie> findOrderByEmail(String email){
+    public List<Order> findOrderByEmail(String email){
         return zamowienieRepository.findByEmail(email);
     }
 
