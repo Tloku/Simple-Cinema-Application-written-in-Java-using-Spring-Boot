@@ -64,7 +64,8 @@ public class ShowOrderWindow extends JFrame {
 
         for(int i = 0; i < moviesList.size(); i++) {
             Movie movie = movieService.findByTitle(moviesList.get(i));
-            datesList.add(movieService.findRepertoireDateByMovieIDAndTicketID(movie.getMovieID(), ticketsList.get(i).getTicketID()));
+            datesList.add(movieService.findRepertoireDateByMovieIDAndTicketID(movie.getMovieID(),
+                    ticketsList.get(i).getTicketID()));
         }
 
         for(int i = 0; i < ticketsList.size(); i++){

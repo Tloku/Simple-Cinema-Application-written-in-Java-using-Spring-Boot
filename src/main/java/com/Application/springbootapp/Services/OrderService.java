@@ -11,24 +11,24 @@ import java.util.List;
 @Service
 public class OrderService implements iOrderService {
     @Autowired
-    private OrderRepository zamowienieRepository;
+    private OrderRepository orderRepository;
 
     public List<Order> findOrderByEmail(String email){
-        return zamowienieRepository.findByEmail(email);
+        return orderRepository.findByEmail(email);
     }
 
     @Override
     public void addOrder(Date data, float orderValue, String paymentMethod, int userID) {
-        zamowienieRepository.addOrder(data, orderValue, paymentMethod, userID);
+        orderRepository.addOrder(data, orderValue, paymentMethod, userID);
     }
 
     @Override
     public void updateOrder(float orderValue, int orderID) {
-        zamowienieRepository.updateOrderValue(orderValue, orderID);
+        orderRepository.updateOrderValue(orderValue, orderID);
     }
 
     @Override
     public int findOrderIDByDateAndUserID(String date, int userID) {
-        return zamowienieRepository.findByDateAndUserID(date, userID);
+        return orderRepository.findByDateAndUserID(date, userID);
     }
 }

@@ -19,16 +19,16 @@ public class FixTicketWindow extends JFrame {
 
     private JButton changeHourButton = new JButton("Zmień godzinę");
     private JButton deleteTicketButton = new JButton("Usuń bilet");
-    private iTicketService biletService;
+    private iTicketService ticketService;
     private int ticketID;
     private JButton findByEmailButton;
     private Date beginTime;
 
     @Autowired
-    public FixTicketWindow(iTicketService biletService, @Value("${property.ticketID:0}") int ticketID,
+    public FixTicketWindow(iTicketService ticketService, @Value("${property.ticketID:0}") int ticketID,
                            @Value("${property.findByEmailButton:0}") JButton findByEmailButton) {
         super("Fix errors");
-        this.biletService = biletService;
+        this.ticketService = ticketService;
         this.ticketID = ticketID;
         this.findByEmailButton = findByEmailButton;
         initComponents();
@@ -51,7 +51,6 @@ public class FixTicketWindow extends JFrame {
     }
 
     private void changeHourActionListener()  {
-
         String begin = beginTimeTextField.getText();
         int hour, minutes;
         try {
@@ -70,7 +69,7 @@ public class FixTicketWindow extends JFrame {
                 return;
             }
             beginTime.setHours(beginTime.getHours() + 1);
-            biletService.changeTicketBeginTimeByTicketID(ticketID, beginTime);
+            ticketService.changeTicketBeginTimeByTicketID(ticketID, beginTime);
         } else {
             JOptionPane.showMessageDialog(null, "Podano nieistniejącą godzine");
         }
@@ -92,7 +91,7 @@ public class FixTicketWindow extends JFrame {
     }
 
     private void deleteTicketActionListener() {
-        biletService.deleteTicketByTicketID(ticketID);
+        ticketService.deleteTicketByTicketID(ticketID);
         JOptionPane.showMessageDialog(null, "Usunięto bilet o ID: " + ticketID);
         this.setVisible(false);
         findByEmailButton.doClick();

@@ -11,6 +11,5 @@ public interface iScheduleService {
     void addScheduleForMovie(Date beginTime, Date endTime, int movieID, int repetorireID, int cinemaHallID);
     void deleteScheduleByMovieID(int movieID);
     void updateScheduleByID(Date beginTime, Date endTime, int scheduleID);
-
     Schedule findScheduleByID(int scheduleID);
 }

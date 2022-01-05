@@ -31,8 +31,7 @@ public class Movie {
     private String Title;
 
     @Column(
-            name = "Dlugosc",
-            unique = false
+            name = "Dlugosc"
     )
     private int movieLength;
 

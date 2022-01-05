@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
-
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
 @Controller

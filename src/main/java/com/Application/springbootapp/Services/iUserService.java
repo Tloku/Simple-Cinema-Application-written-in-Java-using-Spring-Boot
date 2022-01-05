@@ -7,6 +7,6 @@ public interface iUserService {
 
     void add(String name, String surname, String email, String haslo, int rola);
     List<User> findAll();
-    User findUzytkownikByEmail(String email);
-    int findRolaByEmail(String email);
+    User findUserByEmail(String email);
+    int findRoleByEmail(String email);
 }

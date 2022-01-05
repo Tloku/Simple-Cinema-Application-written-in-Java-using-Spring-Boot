@@ -120,7 +120,7 @@ public class LoginWindow extends JFrame {
     }
 
     private void loginButtonActionListener(String email, String password) throws InterruptedException {
-        User uzytkownik = userService.findUzytkownikByEmail(email);
+        User uzytkownik = userService.findUserByEmail(email);
         if(uzytkownik.getPassword().equals(password)){
             correctLabel.setForeground(Color.GREEN);
             correctLabel.setText("Zalogowano!");

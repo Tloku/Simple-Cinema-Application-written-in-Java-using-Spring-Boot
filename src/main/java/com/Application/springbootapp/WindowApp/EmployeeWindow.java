@@ -23,8 +23,8 @@ public class EmployeeWindow extends JFrame {
     private iTicketService ticketService;
     private iMovieService movieService;
     private iScheduleService scheduleService;
-    private iRepertoireService repertuarKinaService;
-    private iCategoryService gatunekService;
+    private iRepertoireService repertoireService;
+    private iCategoryService categoryService;
 
     private JTable ordersTable;
     private JLabel userEmailLabel = new JLabel("Email użytkownika: ");
@@ -56,16 +56,16 @@ public class EmployeeWindow extends JFrame {
 
     @Autowired
     EmployeeWindow(iOrderService orderService, iTicketService ticketService, iMovieService movieService,
-                   iScheduleService scheduleService, iRepertoireService repertuarKinaService,
-                   iCategoryService gatunekService) {
+                   iScheduleService scheduleService, iRepertoireService repertoireService,
+                   iCategoryService categoryService) {
         super("Employee Window");
 
         this.orderService = orderService;
         this.ticketService = ticketService;
         this.movieService = movieService;
         this.scheduleService = scheduleService;
-        this.repertuarKinaService = repertuarKinaService;
-        this.gatunekService = gatunekService;
+        this.repertoireService = repertoireService;
+        this.categoryService = categoryService;
 
         initComponents();
         initFixLayout();
@@ -88,7 +88,7 @@ public class EmployeeWindow extends JFrame {
     }
 
     private void initComboBox() {
-        cinemaRepertoiresList = repertuarKinaService.findAllRepertoires();
+        cinemaRepertoiresList = repertoireService.findAllRepertoires();
         cinemaRepertoireStrings.add("ID/Data");
         for(Repertoire cinemaRepertoire : cinemaRepertoiresList) {
             cinemaRepertoireStrings.add(cinemaRepertoire.getRepertoireID() + ". " + cinemaRepertoire.getDate());
@@ -243,7 +243,7 @@ public class EmployeeWindow extends JFrame {
     }
 
     private void addMovieButtonActionListener() {
-        AddMovieWindow addMovieWindow = new AddMovieWindow(movieService, gatunekService,repertoireID);
+        AddMovieWindow addMovieWindow = new AddMovieWindow(movieService, categoryService,repertoireID);
         addMovieWindow.setVisible(true);
     }
 

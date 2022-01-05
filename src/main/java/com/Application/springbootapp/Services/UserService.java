@@ -12,23 +12,23 @@ import java.util.List;
 public class UserService implements iUserService {
 
     @Autowired
-    private UserRepository uzytkownikRepository;
+    private UserRepository userRepository;
 
     @Override
     public void add(String name, String surname, String email, String haslo, int rola) {
-        uzytkownikRepository.add(name, surname, email, haslo, 2);
+        userRepository.add(name, surname, email, haslo, 2);
     }
 
     @Override
     public List<User> findAll() {
-        return uzytkownikRepository.findAll();
+        return userRepository.findAll();
     }
     @Override
-    public User findUzytkownikByEmail(String email){
-        User user = uzytkownikRepository.findByEmail(email);
+    public User findUserByEmail(String email){
+        User user = userRepository.findByEmail(email);
         if(user == null) return null;
         Role role = new Role();
-        role.setRoleID(findRolaByEmail(email));
+        role.setRoleID(findRoleByEmail(email));
         if(role.getRoleID() == 1)
             role.setRoleName("Pracownik");
         else if(role.getRoleID() == 2)
@@ -40,7 +40,7 @@ public class UserService implements iUserService {
     }
 
     @Override
-    public int findRolaByEmail(String email){
-        return uzytkownikRepository.findRolaUzytkownikaByEmail(email);
+    public int findRoleByEmail(String email){
+        return userRepository.findRolaUzytkownikaByEmail(email);
     }
 }
