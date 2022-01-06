@@ -34,4 +34,23 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true
     )
     int findRolaUzytkownikaByEmail(String email);
+
+
+    @Modifying
+    @Query(
+            value = "UPDATE Użytkownik " +
+                    "SET Użytkownik.Haslo = ?2 " +
+                    "WHERE Użytkownik.Użytkownik_ID = ?1",
+            nativeQuery = true
+    )
+    @Transactional
+    void changePasswordByUserID(int userID, String password);
+
+
+    @Query(
+            value = "SELECT * FROM Użytkownik " +
+                    "WHERE Użytkownik.Użytkownik_ID = ?1 ",
+            nativeQuery = true
+    )
+    User findUserByID(int userID);
 }

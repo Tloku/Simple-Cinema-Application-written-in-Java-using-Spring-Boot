@@ -43,4 +43,14 @@ public class UserService implements iUserService {
     public int findRoleByEmail(String email){
         return userRepository.findRolaUzytkownikaByEmail(email);
     }
+
+    @Override
+    public void changePasswordByUserID(int userID, String password) {
+        userRepository.changePasswordByUserID(userID, password);
+    }
+
+    @Override
+    public User findUserByID(int userID) {
+        return userRepository.findUserByID(userID);
+    }
 }

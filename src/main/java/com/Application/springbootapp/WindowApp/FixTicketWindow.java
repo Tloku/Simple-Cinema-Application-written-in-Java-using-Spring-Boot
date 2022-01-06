@@ -33,7 +33,6 @@ public class FixTicketWindow extends JFrame {
         this.findByEmailButton = findByEmailButton;
         initComponents();
         initLayout();
-        System.out.println(ticketID);
     }
 
     private void initComponents() {
@@ -74,6 +73,7 @@ public class FixTicketWindow extends JFrame {
             JOptionPane.showMessageDialog(null, "Podano nieistniejącą godzine");
         }
         this.setVisible(false);
+        findByEmailButton.doClick();
     }
 
     private boolean checkIfHourIsCorrect(int hour){

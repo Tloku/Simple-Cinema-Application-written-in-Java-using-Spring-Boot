@@ -21,6 +21,7 @@ public class ClientWindow extends JFrame {
     private iMovieService movieService;
     private iScheduleService scheduleService;
     private iRepertoireService repertoireService;
+    private iUserService userService;
     private int userID;
     private int winWidth = 800;
     private int winHeight = 300;
@@ -37,6 +38,7 @@ public class ClientWindow extends JFrame {
     private JTextField buyTicketTextField = new JTextField("harmonogram_ID", 7);
     private JButton buyTicketButton = new JButton("Kup!");
     private JButton showOrderButton = new JButton("Pokaż zamówienie");
+    private JButton changePasswordButton = new JButton("Zmień hasło");
     private int repertoireID;
     private int orderID = 0;
     private int scheduleID;
@@ -48,13 +50,14 @@ public class ClientWindow extends JFrame {
 
     @Autowired
     public ClientWindow(iOrderService orderService, iTicketService ticketService, iMovieService movieService,
-                        iScheduleService scheduleService, iRepertoireService repertoireService,
+                        iScheduleService scheduleService, iRepertoireService repertoireService, iUserService userService,
                         @Value("${property.userID:0}")int userID) {
         super("Okno klienta");
         this.orderService = orderService;
         this.ticketService = ticketService;
         this.movieService = movieService;
         this.scheduleService = scheduleService;
+        this.userService = userService;
         this.repertoireService = repertoireService;
         this.userID = userID;
         initComponents();
@@ -74,6 +77,7 @@ public class ClientWindow extends JFrame {
         repertoireComboBox.addActionListener(e -> {repertoireComboBoxActionListener();});
         buyTicketButton.addActionListener(e -> {buyTicketButtonActionListener();});
         showOrderButton.addActionListener(e -> {showOrderButtonActionListener();});
+        changePasswordButton.addActionListener(e -> {changePasswordButtonActionListener();});
     }
 
     private void showOrderButtonActionListener() {
@@ -95,6 +99,7 @@ public class ClientWindow extends JFrame {
         panel.add(buyTicketTextField);
         panel.add(buyTicketButton);
         panel.add(showOrderButton);
+        panel.add(changePasswordButton);
         this.add(panel);
     }
 
@@ -182,4 +187,8 @@ public class ClientWindow extends JFrame {
         repertoireComboBox = new JComboBox(cinemaRepertoireStrings);
     }
 
+    private void changePasswordButtonActionListener() {
+        ChangePasswordWindow changePasswordWindow = new ChangePasswordWindow(userService, userID);
+        changePasswordWindow.setVisible(true);
+    }
 }

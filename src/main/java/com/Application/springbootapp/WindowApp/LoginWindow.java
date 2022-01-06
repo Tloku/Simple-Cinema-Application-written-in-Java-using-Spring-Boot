@@ -4,7 +4,6 @@ import com.Application.springbootapp.Entities.User;
 import com.Application.springbootapp.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
@@ -136,7 +135,7 @@ public class LoginWindow extends JFrame {
                 System.out.println("Otworzylem okno employee");
             } else if (uzytkownik.getRola().getRoleID() == 2) {
                 ClientWindow clientWindow = new ClientWindow(orderService, ticketService, movieService,
-                        scheduleService, repertoireService, uzytkownik.getUserID());
+                        scheduleService, repertoireService, userService, uzytkownik.getUserID());
                 clientWindow.setVisible(true);
                 System.out.println("Otworzylem okno klient");
             }

@@ -9,4 +9,6 @@ public interface iUserService {
     List<User> findAll();
     User findUserByEmail(String email);
     int findRoleByEmail(String email);
+    void changePasswordByUserID(int userID, String password);
+    User findUserByID(int userID);
 }

@@ -229,7 +229,8 @@ public class EmployeeWindow extends JFrame {
             JOptionPane.showMessageDialog(null, "Zły format filmID");
             return;
         }
-        int delete = JOptionPane.showConfirmDialog(null, "Czy na pewno chcesz usunąć ten film", "Usuwanie",
+        int delete = JOptionPane.showConfirmDialog(null, "Czy na pewno chcesz usunąć ten film",
+                "Usuwanie",
                 JOptionPane.YES_NO_OPTION);
         if(delete == JOptionPane.YES_OPTION) {
             scheduleService.deleteScheduleByMovieID(movieID);
