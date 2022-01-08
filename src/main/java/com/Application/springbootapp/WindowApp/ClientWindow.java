@@ -3,6 +3,7 @@ package com.Application.springbootapp.WindowApp;
 import com.Application.springbootapp.Entities.Movie;
 import com.Application.springbootapp.Entities.Schedule;
 import com.Application.springbootapp.Entities.Repertoire;
+import com.Application.springbootapp.Entities.User;
 import com.Application.springbootapp.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -47,11 +50,12 @@ public class ClientWindow extends JFrame {
     List<Schedule> moviesData = new ArrayList<>();
     List<Integer> schedulesIDList = new ArrayList<>();
     Date date = new Date();
+    private EmailSenderService emailSenderService;
 
     @Autowired
     public ClientWindow(iOrderService orderService, iTicketService ticketService, iMovieService movieService,
                         iScheduleService scheduleService, iRepertoireService repertoireService, iUserService userService,
-                        @Value("${property.userID:0}")int userID) {
+                        @Value("${property.userID:0}")int userID, EmailSenderService emailSenderService) {
         super("Okno klienta");
         this.orderService = orderService;
         this.ticketService = ticketService;
@@ -60,6 +64,7 @@ public class ClientWindow extends JFrame {
         this.userService = userService;
         this.repertoireService = repertoireService;
         this.userID = userID;
+        this.emailSenderService = emailSenderService;
         initComponents();
         initLayout();
     }
@@ -78,6 +83,23 @@ public class ClientWindow extends JFrame {
         buyTicketButton.addActionListener(e -> {buyTicketButtonActionListener();});
         showOrderButton.addActionListener(e -> {showOrderButtonActionListener();});
         changePasswordButton.addActionListener(e -> {changePasswordButtonActionListener();});
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                User user = userService.findUserByID(userID);
+                if(orderID != 0) {
+                    JOptionPane.showMessageDialog(null, "Zamykanie potrwa trochę dłużej," +
+                            " kompletujemy twoje zamówienie oraz wysyłamy maila.");
+                    emailSenderService.sendEmail(user.getEmail(), "Twoje zamówienie o nr " +orderID,
+                            "Dziękujęmy za zakup biletów w naszym kinie.\n" +
+                                    "Życzymy miłego seansu! :)\n" +
+                                    "Ponizej znadjduje się plik pdf z twoimi biletami\n" +
+                                    "*plik*");
+                }
+
+            }
+        });
     }
 
     private void showOrderButtonActionListener() {

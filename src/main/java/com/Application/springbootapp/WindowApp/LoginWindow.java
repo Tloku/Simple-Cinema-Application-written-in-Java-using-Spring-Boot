@@ -26,6 +26,7 @@ public class LoginWindow extends JFrame {
     private iScheduleService scheduleService;
     private iRepertoireService repertoireService;
     private iCategoryService categoryService;
+    private EmailSenderService emailSenderService;
 
     private JLabel correctLabel = new JLabel("Zły email lub hasło");
     private RegisterWindow regWin;
@@ -33,7 +34,8 @@ public class LoginWindow extends JFrame {
     @Autowired
     public LoginWindow(iRoleService roleService, iUserService userService, iOrderService orderService,
                        iTicketService ticketService, iMovieService movieService, iScheduleService scheduleService,
-                       iRepertoireService repertoireService, iCategoryService categoryService) {
+                       iRepertoireService repertoireService, iCategoryService categoryService,
+                       EmailSenderService emailSenderService) {
         super("Logowanie");
         this.roleService = roleService;
         this.userService = userService;
@@ -43,6 +45,7 @@ public class LoginWindow extends JFrame {
         this.scheduleService = scheduleService;
         this.repertoireService = repertoireService;
         this.categoryService = categoryService;
+        this.emailSenderService = emailSenderService;
         initComponents();
         initLayout();
         this.setVisible(true);
@@ -135,7 +138,7 @@ public class LoginWindow extends JFrame {
                 System.out.println("Otworzylem okno employee");
             } else if (uzytkownik.getRola().getRoleID() == 2) {
                 ClientWindow clientWindow = new ClientWindow(orderService, ticketService, movieService,
-                        scheduleService, repertoireService, userService, uzytkownik.getUserID());
+                        scheduleService, repertoireService, userService, uzytkownik.getUserID(), emailSenderService);
                 clientWindow.setVisible(true);
                 System.out.println("Otworzylem okno klient");
             }

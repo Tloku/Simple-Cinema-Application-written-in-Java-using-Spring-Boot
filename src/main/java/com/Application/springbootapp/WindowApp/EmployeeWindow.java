@@ -58,7 +58,7 @@ public class EmployeeWindow extends JFrame {
     EmployeeWindow(iOrderService orderService, iTicketService ticketService, iMovieService movieService,
                    iScheduleService scheduleService, iRepertoireService repertoireService,
                    iCategoryService categoryService) {
-        super("Employee Window");
+        super("Okno pracownika");
 
         this.orderService = orderService;
         this.ticketService = ticketService;
@@ -81,8 +81,8 @@ public class EmployeeWindow extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         tabbedPane.setBounds(0, 0, winWidth ,winHeight);
-        tabbedPane.add("Fix Errors", fixPanel);
-        tabbedPane.add("Modify", modifyRepertoirePanel);
+        tabbedPane.add("Popraw błędy", fixPanel);
+        tabbedPane.add("Modyfikuj", modifyRepertoirePanel);
         initComboBox();
         this.add(tabbedPane);
     }

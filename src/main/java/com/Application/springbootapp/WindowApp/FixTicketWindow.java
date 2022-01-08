@@ -27,7 +27,7 @@ public class FixTicketWindow extends JFrame {
     @Autowired
     public FixTicketWindow(iTicketService ticketService, @Value("${property.ticketID:0}") int ticketID,
                            @Value("${property.findByEmailButton:0}") JButton findByEmailButton) {
-        super("Fix errors");
+        super("Popraw błędy");
         this.ticketService = ticketService;
         this.ticketID = ticketID;
         this.findByEmailButton = findByEmailButton;
